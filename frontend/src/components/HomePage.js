@@ -10,6 +10,7 @@ import {
     Route, 
     Link,
     Navigate,
+    Redirect
 } from "react-router-dom";
 
 
@@ -19,6 +20,7 @@ export default class HomePage extends Component {
         this.state = {
             roomCode: null,
         };
+        this.clearRoomCode = this.clearRoomCode.bind(this);
     }
 
 async componentDidMount() {
@@ -42,7 +44,7 @@ renderHomePage(){
     return (
         <Grid container spacing={3}>
             <Grid item xs={12} align="center">
-                <Typography variant="h3" compact="h3">
+                <Typography variant="h3" component="h3">
                     House Party
                 </Typography>
             </Grid>
@@ -59,17 +61,35 @@ renderHomePage(){
         </Grid>
         );
     }
+}   
+clearRoomCode(){
+    this.setState({
+        roomCode: null,
+    });
 }
-     render() {
-        return (
-            <Router>
-                <Routes>
-                    <Route path="/" element={this.renderHomePage()} />
-                    <Route path="/join/*" element={<RoomJoinPage />} />
-                    <Route path="/create/" element={<CreateRoomPage />} />
-                    <Route path="/room/:roomCode" element={<Room />} render={({ match }) => <Room id={match.params.roomCode} />} />
-                </Routes>
-            </Router>
-        )
-    }
+render() {
+    return (
+      <Router>
+        <Routes>
+          <Route
+            exact
+            path="/"
+            element={
+              this.state.roomCode ? (
+                <Redirect to={`/room/${this.state.roomCode}`} />
+              ) : (
+                this.renderHomePage()
+              )
+            }
+          />
+          <Route path="/join" element={<RoomJoinPage />} />
+          <Route path="/create" element={<CreateRoomPage />} />
+          <Route
+            path="/room/:roomCode"
+            element={<Room leaveRoomCallback={this.clearRoomCode} />}
+          />
+        </Routes>
+      </Router>
+    );
+  }
 }
