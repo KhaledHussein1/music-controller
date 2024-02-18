@@ -73,7 +73,7 @@ render() {
         <Routes>
           <Route
             exact
-            path="/"
+            path='/'
             element={
               this.state.roomCode ? (
                 <Redirect to={`/room/${this.state.roomCode}`} />
