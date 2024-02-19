@@ -23,13 +23,31 @@ export default class HomePage extends Component {
         this.clearRoomCode = this.clearRoomCode.bind(this);
     }
 
-async componentDidMount() {
-    const response = await fetch("/api/user-in-room");
-    const data = await response.json();
-    this.setState({
-        roomCode: data.code
-    });
-}
+    async componentDidMount() {
+      try {
+          const response = await fetch("/api/user-in-room");
+          const data = await response.json();
+          // Check if the component is still mounted
+          if (this._isMounted) {
+              this.setState({
+                  roomCode: data.code
+              });
+          }
+      } catch (error) {
+          console.error('Error fetching room data:', error);
+      }
+  }
+  
+  // Set a flag indicating the component is unmounted
+  componentWillUnmount() {
+      this._isMounted = false;
+  }
+  
+  // Add a flag to indicate if the component is mounted
+  componentDidMount() {
+      this._isMounted = true;
+  }
+  
 /*
 1. The switch has been replaced with Routes.
 2. Components for routes are now passed through the element prop.
