@@ -34,7 +34,7 @@ export default class HomePage extends Component {
               });
           }
       } catch (error) {
-          console.error('Error fetching room data:', error);
+          console.error("Error fetching room data:", error);
       }
   }
   
