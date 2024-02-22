@@ -9,6 +9,7 @@ export const Room = ({leaveRoomCallback}) => {
     const [guestCanPause, setGuestCanPause] = useState(false);
     const [isHost, setIsHost] = useState(false);
     const [showSettings, setShowSettings] = useState(false);
+    const [update, setUpdate] = useState(false);
     const navigate = useNavigate();
 
     const { roomCode } = useParams();
@@ -48,6 +49,7 @@ export const Room = ({leaveRoomCallback}) => {
     }
 
     const updateShowSettings = (e) => {
+        setUpdate(e);
         setShowSettings(e);
     }
 
@@ -56,11 +58,11 @@ export const Room = ({leaveRoomCallback}) => {
         <Grid container spacing={1}>
             <Grid item xs={12} align="center">
                 <CreateRoomPage 
-                update={true} 
+                update={update} 
                 votesToSkip={VotesToSkip} 
                 guestCanPause={guestCanPause} 
                 roomCode={roomCode} 
-                updateCallback={() => {}} 
+                updateCallback={() => { }} 
                 />
             </Grid>
             <Grid item xs={12} align="center">
